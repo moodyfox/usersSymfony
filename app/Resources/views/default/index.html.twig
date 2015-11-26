@@ -1,0 +1,18 @@
+{#
+    Mostrar tabla de usuarios, y al lado enlaces para actualizar, eliminar
+#}
+
+
+{% extends 'base.html.twig' %}
+{% block body %}
+    {{ parent() }}
+
+    <script type="text/javascript">
+        jQuery(document).ready(function () {
+            window.location.replace("{{ path('user') }}");
+        });
+    </script>
+
+
+
+{% endblock %}

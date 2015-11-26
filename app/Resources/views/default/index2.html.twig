@@ -1,0 +1,32 @@
+{% extends 'base.html.twig' %}
+{% block body %}
+    {{ parent() }}
+
+<ul>
+    <li><a href="{{ path('app_user_add') }}">Añadir usuario</a></li>
+    <li><a href="{{ path('app_user_modify') }}">Modificar usuarios</a></li>
+    <li><a href="{{ path('app_user_delete') }}">Borrar usuarios</a></li>
+</ul>
+<table>
+    <thead>
+        <tr>
+            <th>Id</th>
+            <th>Username</th>
+            <th>Email</th>
+            <th>Creado</th>
+            <th>Actualizado</th>
+        </tr>
+    </thead>
+    <tbody>
+    {% for user in users %}
+        <tr>
+            <td>{{ user.id }}</td>
+            <td>{{ user.username }}</td>
+            <td>{{ user.email }}</td>
+            <td>{{ user.createdAt|date('d/m/Y') }}</td>
+            <td>{{ user.updatedAt|date('d/m/Y') }}</td>
+        </tr>
+    {% endfor %}
+    </tbody>
+</table>
+{% endblock %}
