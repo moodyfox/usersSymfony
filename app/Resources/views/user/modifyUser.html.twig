@@ -4,14 +4,13 @@
 
     {{ parent() }}
     <div>
-        <form id ="fr" method="post" action="{{ path('app_user_doModify') }}">
+        <form id ="fr" method="post" action="{{ path('app_user_doModify', { 'id': app.request.query.get("id") } ) }}">
             <p>Nombre de usuario</p>
             <input type="text" name="user"><br/><br/>
             <p>Contraseña</p>
             <input type="password" name="pass"><br/><br/><br/>
             <p>Email de usuario</p>
             <input type="text" name="mail"><br/><br/>
-
             <input type="submit" value="modify"><br/>
         </form>
 

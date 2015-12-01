@@ -4,8 +4,8 @@
 
 <ul>
     <li><a href="{{ path('app_user_add') }}">Añadir usuario</a></li>
-    <li><a href="{{ path('app_user_modify') }}">Modificar usuarios</a></li>
-    <li><a href="{{ path('app_user_delete') }}">Borrar usuarios</a></li>
+    {#<li><a href="{{ path('app_user_modify') }}">Modificar usuarios</a></li>
+    <li><a href="{{ path('app_user_delete') }}">Borrar usuarios</a></li>#}
 </ul>
 <table>
     <thead>
@@ -15,6 +15,8 @@
             <th>Email</th>
             <th>Creado</th>
             <th>Actualizado</th>
+            <th>Modificar</th>
+            <th>Eliminar</th>
         </tr>
     </thead>
     <tbody>
@@ -25,6 +27,8 @@
             <td>{{ user.email }}</td>
             <td>{{ user.createdAt|date('d/m/Y') }}</td>
             <td>{{ user.updatedAt|date('d/m/Y') }}</td>
+            <td><a href="{{ path('app_user_modify', { 'id': user.id}) }}">Modifica</a></td>
+            <td><a href="{{ path('app_user_doDelete', { 'id': user.id}) }}">Elimina</a></td>
         </tr>
     {% endfor %}
     </tbody>

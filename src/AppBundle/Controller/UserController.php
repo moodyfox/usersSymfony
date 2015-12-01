@@ -12,6 +12,7 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
 use AppBundle\Service\userService;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 
 class UserController extends Controller
 {
@@ -70,9 +71,11 @@ class UserController extends Controller
 
     /**
      * @Route("/modify", name="app_user_modify")
+     * @Method("GET")
+     *
      */
 
-    public function modifyAction(Request $request)
+    public function modifyAction()
     {
         return $this->render('user/modifyUser.html.twig');
     }
@@ -83,16 +86,21 @@ class UserController extends Controller
 
     public function doModifyAction(Request $request)
     {
-        $username = $request->get('user');
+        $id = $request->get('id');
         $repository = $this->getDoctrine()->getRepository('AppBundle:User');
         $em = $this->getDoctrine()->getManager();
-        $user = $repository->findOneBy(array('username' => $username));
+        $user = $repository->find($id);
 
-        if (!$user){
+        if (!$id){
             throw $this->createNotFoundException('Usuario con este nombre no encontrado');
         }
+        $usu = $request->request->get('user');
         $pass = $request->request->get('pass');
         $mail = $request->request->get('mail');
+
+        if ($usu == null){
+            $usu = $user->getUsername();
+        }
 
         if ($pass == null){
             $pass = $user->getPassword();
@@ -101,19 +109,13 @@ class UserController extends Controller
         if ($mail == null){
             $mail = $user->getEmail();
         }
-
+        $user->setUsername($usu);
         $user->setPassword($pass);
         $user->setEmail($mail);
         $user->setUpdatedAt(new \Datetime("now"));
         $em->flush();
 
-        return $this->render(
-            ':user:do-modifyUser.html.twig',
-            [
-                'user' => $username,
-                'title' => 'Usuario modificado',
-            ]
-        );
+        return $this->render(':user:do-modifyUser.html.twig');
     }
 
     /**
@@ -127,12 +129,12 @@ class UserController extends Controller
     /**
      * @Route("/do-delete", name="app_user_doDelete")
      */
-    public function doDeleteAction(Request $request)
+    public function doDeleteAction()
     {
-        $username = $request->get('user');
+        $id = $_GET['id'];
         $repository = $this->getDoctrine()->getRepository('AppBundle:User');
         $em = $this->getDoctrine()->getManager();
-        $user = $repository->findOneBy(array('username' => $username));
+        $user = $repository->find($id);
         if (!$user){
             throw $this->createNotFoundException('Usuario con este nombre no encontrado');
         }
@@ -142,7 +144,6 @@ class UserController extends Controller
         return $this->render(
             ':user:do-deleteUser.html.twig',
             [
-                'user' => $username,
                 'title' => 'Usuario eliminado',
             ]
         );
