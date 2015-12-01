@@ -21,7 +21,7 @@ class UserController extends Controller
      * @Route("/user", name="user")
      */
     public function indexAction(Request $request)
-    {
+    { 
         $em = $this->getDoctrine()->getManager();
         $users = $em->getRepository('AppBundle:User')->findAll();
         return $this->render(
